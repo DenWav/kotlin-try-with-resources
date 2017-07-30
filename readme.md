@@ -8,13 +8,13 @@ I can't think of anything else to add to it, so this probably isn't going to gro
 ----------
 
 Kotlin has no answer to Java's try-with-resources mechanic. This is sad as it's probably the only thing Java has that Kotlin doesn't.
-Kotlin's response is with the `AutoCloseable#using()` extension method. This is fine except for three very big and annoying issues:
+Kotlin's response is with the `AutoCloseable#use()` extension method. This is fine except for three very big and annoying issues:
 
 1. No scoping help. In Java with `try-with-resources`, when you are finished using the given resource they would not only automatically be
    closed for you, they would also conveniently go out of scope.
-2. No support for multiple resources. The only way to use multiple resources is to nest `using()` blocks.
+2. No support for multiple resources. The only way to use multiple resources is to nest `use()` blocks.
 3. No support for catching exceptions. In Java with `try-with-resources` you can catch exceptions thrown in the resource initialization in
-   the same try block. In Kotlin, you have to wrap the `using()` block in another `try-catch` block.
+   the same try block. In Kotlin, you have to wrap the `use()` block in another `try-catch` block.
 
 The only good solution for this is for the Kotlin language itself to be expanded to support proper `try-with-resources`. The team is against
 this for some reason, not wanting to add language features for something like this, opting instead to use existing language features to
