@@ -162,6 +162,51 @@ public final class ResourceManager {
 }
 ```
 
+For reference, this is the standard Kotlin equivalent:
+
+```kotlin
+class Example {
+    fun example() {
+        try {
+            getConnection().use { connection ->
+                connection.prepareStatement("SELECT ?").use { statement ->
+                    statement.setInt(1, 1)
+                    statement.executeQuery().use { rs ->
+                        // Do database stuff
+                    }
+                }
+            }
+        } catch (e: IOException) {
+            LOGGER.error("IO error", e)
+        } catch (e: SQLException) {
+            LOGGER.error("Error in query", e)
+        }
+    }
+}
+```
+
+And this is the Java equivalent:
+
+```java
+public class Example {
+    public void example() {
+        try (
+            final Connection connection = getConnect();
+            final PreparedStatement statement = connection.prepareStatement("SELECT ?")
+        ) {
+            statement.setInt(1, 1);
+            try (final ResultSet rs = statement.executeQuery()) {
+                // Do database stuff
+            }
+        } catch (IOException e) {
+            LOGGER.error("IO error", e);
+        } catch (SQLException e) {
+            LOGGER.error("Error in query");
+        }
+    }
+}
+```
+
 So it's definitely not as efficient as the Java `try-with-resources`. However, whether this would actually effect anything in practice, I
 don't know.
 
