@@ -80,7 +80,26 @@ public final class Example {
         }
         
         Catcher this_iv = manager.getCatcher();
+        String var45;
         Throwable var10000;
+        if (this_iv.getT() instanceof IOException) {
+            try {
+                var10000 = this_iv.getT();
+                if (var10000 == null) {
+                    throw new TypeCastException("null cannot be cast to non-null type java.io.IOException");
+                }
+                
+                IOException e = (IOException) var10000;
+                var45 = "IO Error";
+                System.out.println(var45);
+                e.printStackTrace();
+            } catch (Throwable t) {
+                this_iv.setThrown(t);
+            } finally {
+                this_t.setT((Throwable) null);
+            }
+        }
+        
         if (this_iv.getT() instanceof SQLException) {
             try {
                 var10000 = this_iv.getT();
@@ -89,8 +108,8 @@ public final class Example {
                 }
                 
                 SQLException e = (SQLException) var10000;
-                String var30 = "Error in query";
-                System.out.println(var30);
+                var45 = "Error in query";
+                System.out.println(var45);
                 e.printStackTracer();
             } catch (Throwable t) {
                 this_iv.setThrown(t);
