@@ -27,9 +27,9 @@ class UsingTest {
     @DisplayName("Simple using {} test")
     fun testBasicUsing() {
         val queue = using {
-            val connection = +getConnection()
-            val statement = +connection.prepareStatement()
-            val rs = +statement.executeQuery()
+            val connection = getConnection().autoClose()
+            val statement = connection.prepareStatement().autoClose()
+            val rs = statement.executeQuery().autoClose()
             rs.next()
         }.manager.resourceQueue
 
@@ -42,9 +42,9 @@ class UsingTest {
     @DisplayName("Close all with catch test")
     fun testWithCatch() {
         val queue = (using {
-            val connection = +getConnection()
-            val statement = +connection.prepareStatement()
-            val rs = +statement.executeQuery()
+            val connection = getConnection().autoClose()
+            val statement = connection.prepareStatement().autoClose()
+            val rs = statement.executeQuery().autoClose()
             rs.next()
         } catch { _: Exception ->
         }).manager.resourceQueue
@@ -58,9 +58,9 @@ class UsingTest {
     @DisplayName("Close all with caught exception test")
     fun testWithCaught() {
         val queue = (using {
-            val connection = +getConnection()
-            val statement = +connection.prepareStatement()
-            val rs = +statement.executeQuery()
+            val connection = getConnection().autoClose()
+            val statement = connection.prepareStatement().autoClose()
+            val rs = statement.executeQuery().autoClose()
             rs.next()
             throw SuperSecretException
         } catch { _: SuperSecretException ->
@@ -75,9 +75,9 @@ class UsingTest {
     @DisplayName("Close all with uncaught exception test")
     fun testWithUncaught() {
         val catcher = (using {
-            val connection = +getConnection()
-            val statement = +connection.prepareStatement()
-            val rs = +statement.executeQuery()
+            val connection = getConnection().autoClose()
+            val statement = connection.prepareStatement().autoClose()
+            val rs = statement.executeQuery().autoClose()
             rs.next()
             throw SuperSecretException
         } catch { _: AnotherSecretException ->
@@ -97,9 +97,9 @@ class UsingTest {
     fun testExceptionInBlock() {
         assertThrows(SuperSecretException::class.java) {
             using {
-                val connection = +getConnection()
-                val statement = +connection.prepareStatement()
-                val rs = +statement.executeQuery()
+                val connection = getConnection().autoClose()
+                val statement = connection.prepareStatement().autoClose()
+                val rs = statement.executeQuery().autoClose()
                 rs.next()
                 throw SuperSecretException
             } finally {}
@@ -110,9 +110,9 @@ class UsingTest {
     @DisplayName("Exception in using {} block with catch test")
     fun testCatch() {
         using {
-            val connection = +getConnection()
-            val statement = +connection.prepareStatement()
-            val rs = +statement.executeQuery()
+            val connection = getConnection().autoClose()
+            val statement = connection.prepareStatement().autoClose()
+            val rs = statement.executeQuery().autoClose()
             rs.next()
             throw SuperSecretException
         } catch { _: SuperSecretException ->
@@ -124,9 +124,9 @@ class UsingTest {
     fun testCatchWrongType() {
         assertThrows(SuperSecretException::class.java) {
             using {
-                val connection = +getConnection()
-                val statement = +connection.prepareStatement()
-                val rs = +statement.executeQuery()
+                val connection = getConnection().autoClose()
+                val statement = connection.prepareStatement().autoClose()
+                val rs = statement.executeQuery().autoClose()
                 rs.next()
                 throw SuperSecretException
             } catch { _: RuntimeException ->
@@ -138,9 +138,9 @@ class UsingTest {
     @DisplayName("Exception in using {} block with catch of super type test")
     fun testCatchSuperType() {
         using {
-            val connection = +getConnection()
-            val statement = +connection.prepareStatement()
-            val rs = +statement.executeQuery()
+            val connection = getConnection().autoClose()
+            val statement = connection.prepareStatement().autoClose()
+            val rs = statement.executeQuery().autoClose()
             rs.next()
             throw SuperSecretException
         } catch { _: Exception ->
@@ -151,9 +151,9 @@ class UsingTest {
     @DisplayName("Exception in using {} block with multi-catch test")
     fun testMultiCatch() {
         using {
-            val connection = +getConnection()
-            val statement = +connection.prepareStatement()
-            val rs = +statement.executeQuery()
+            val connection = getConnection().autoClose()
+            val statement = connection.prepareStatement().autoClose()
+            val rs = statement.executeQuery().autoClose()
             rs.next()
             throw SuperSecretException
         } catch { _: RuntimeException ->
@@ -166,9 +166,9 @@ class UsingTest {
     @DisplayName("Exception in using {} block with multi-catch super type test")
     fun testMultiCatchSuper() {
         using {
-            val connection = +getConnection()
-            val statement = +connection.prepareStatement()
-            val rs = +statement.executeQuery()
+            val connection = getConnection().autoClose()
+            val statement = connection.prepareStatement().autoClose()
+            val rs = statement.executeQuery().autoClose()
             rs.next()
             throw SuperSecretException
         } catch { _: RuntimeException ->
@@ -182,9 +182,9 @@ class UsingTest {
     fun testMultiCatchWrongType() {
         assertThrows(SuperSecretException::class.java) {
             using {
-                val connection = +getConnection()
-                val statement = +connection.prepareStatement()
-                val rs = +statement.executeQuery()
+                val connection = getConnection().autoClose()
+                val statement = connection.prepareStatement().autoClose()
+                val rs = statement.executeQuery().autoClose()
                 rs.next()
                 throw SuperSecretException
             } catch { _: RuntimeException ->
@@ -199,9 +199,9 @@ class UsingTest {
     fun testExceptionInCatch() {
         assertThrows(AnotherSecretException::class.java) {
             using {
-                val connection = +getConnection()
-                val statement = +connection.prepareStatement()
-                val rs = +statement.executeQuery()
+                val connection = getConnection().autoClose()
+                val statement = connection.prepareStatement().autoClose()
+                val rs = statement.executeQuery().autoClose()
                 rs.next()
                 throw SuperSecretException
             } catch { _: SuperSecretException ->
@@ -215,9 +215,9 @@ class UsingTest {
     fun testExceptionInCatchWithSameTypeCatch() {
         assertThrows(AnotherSecretException::class.java) {
             using {
-                val connection = +getConnection()
-                val statement = +connection.prepareStatement()
-                val rs = +statement.executeQuery()
+                val connection = getConnection().autoClose()
+                val statement = connection.prepareStatement().autoClose()
+                val rs = statement.executeQuery().autoClose()
                 rs.next()
                 throw SuperSecretException
             } catch { _: SuperSecretException ->
@@ -232,9 +232,9 @@ class UsingTest {
     fun testExceptionInCatchWithMultiCatch() {
         assertThrows(AnotherSecretException::class.java) {
             using {
-                val connection = +getConnection()
-                val statement = +connection.prepareStatement()
-                val rs = +statement.executeQuery()
+                val connection = getConnection().autoClose()
+                val statement = connection.prepareStatement().autoClose()
+                val rs = statement.executeQuery().autoClose()
                 rs.next()
                 throw SuperSecretException
             } catch { _: RuntimeException ->
@@ -250,9 +250,9 @@ class UsingTest {
     fun testExceptionInCatchWithMultiCatchSuperType() {
         assertThrows(AnotherSecretException::class.java) {
             using {
-                val connection = +getConnection()
-                val statement = +connection.prepareStatement()
-                val rs = +statement.executeQuery()
+                val connection = getConnection().autoClose()
+                val statement = connection.prepareStatement().autoClose()
+                val rs = statement.executeQuery().autoClose()
                 rs.next()
                 throw SuperSecretException
             } catch { _: RuntimeException ->
@@ -268,9 +268,9 @@ class UsingTest {
     fun testExceptionInFinally() {
         assertThrows(AnotherSecretException::class.java) {
             using {
-                val connection = +getConnection()
-                val statement = +connection.prepareStatement()
-                val rs = +statement.executeQuery()
+                val connection = getConnection().autoClose()
+                val statement = connection.prepareStatement().autoClose()
+                val rs = statement.executeQuery().autoClose()
                 rs.next()
                 throw SuperSecretException
             } catch { _: SuperSecretException ->
@@ -285,9 +285,9 @@ class UsingTest {
     fun testExceptionInFinallyWithMutliCatch() {
         assertThrows(AnotherSecretException::class.java) {
             using {
-                val connection = +getConnection()
-                val statement = +connection.prepareStatement()
-                val rs = +statement.executeQuery()
+                val connection = getConnection().autoClose()
+                val statement = connection.prepareStatement().autoClose()
+                val rs = statement.executeQuery().autoClose()
                 rs.next()
                 throw SuperSecretException
             } catch { _: RuntimeException ->
@@ -303,9 +303,9 @@ class UsingTest {
     fun testNoExceptionFinally() {
         var b = false
         using {
-            val connection = +getConnection()
-            val statement = +connection.prepareStatement()
-            val rs = +statement.executeQuery()
+            val connection = getConnection().autoClose()
+            val statement = connection.prepareStatement().autoClose()
+            val rs = statement.executeQuery().autoClose()
             rs.next()
         } finally {
             b = true
@@ -319,7 +319,7 @@ class UsingTest {
     fun testExceptionInClose() {
         assertThrows(SuperSecretException::class.java) {
             using {
-                +CloseWithException()
+                CloseWithException().autoClose()
             } finally {}
         }
     }
@@ -328,7 +328,7 @@ class UsingTest {
     @DisplayName("Caught exception in close() test")
     fun testExceptionInCloseCaught() {
         using {
-            +CloseWithException()
+            CloseWithException().autoClose()
         } catch { _: SuperSecretException ->
         } finally {}
     }

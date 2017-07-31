@@ -30,15 +30,11 @@ idea of the performance cost of this, and then I'll go over the real downsides.
 class Example {
     fun example() {
         using {
-            // The unaryPlus operator is used to add resources to the ResourceManager. I chose this as I think it kind of makes sense
-            // (you're "adding" the resources to the manager) and it doesn't clutter the code very much. However, this may not be optimal,
-            // as a single character is hard to miss, so this could easily instead be an extension method as show in the original discussion
-            // above.
-            val connection = +getConnect()
-            val statement = +connection.prepareStatement("SELECT ?")
+            val connection = getConnect().autoClose()
+            val statement = connection.prepareStatement("SELECT ?").autoClose()
             // This means you can add resources to the manager at any time, which is a bonus
             statement.setInt(1, 1)
-            val rs = +statement.executeQuery()
+            val rs = statement.executeQuery().autoClose()
             
             // Do database stuff
         } catch { e: IOException ->
@@ -46,7 +42,7 @@ class Example {
             LOGGER.error("IO error", e)
         } catch { e: SQLException ->
             LOGGER.error("Error in query", e)
-        } finally {} // this is required, even when empty, as the logic for throwing un-caught exceptions is placed here
+        } finally {} // this is necessary, even when empty, as the logic for throwing un-caught exceptions is placed here
     }
 }
 ```
@@ -65,9 +61,9 @@ public final class Example {
             
             try {
                 ResourceManager recevier = (ResourceManager) var2;
-                Connection connection = (Connection) receiver.unaryPlus((AutoCloseable) this.getConnection());
-                PreparedStatement statement = (PreparedStatment) receiver.unaryPlus((AutoCloseable) connection.prepareStatement("SELECT 1"));
-                ResultSet rs = (ResultSet) receiver.unaryPlus((AutoCloseable) statement.executeQuery());
+                Connection connection = (Connection) receiver.autoClose((AutoCloseable) this.getConnection());
+                PreparedStatement statement = (PreparedStatment) receiver.autoClose((AutoCloseable) connection.prepareStatement("SELECT 1"));
+                ResultSet rs = (ResultSet) receiver.autoClose((AutoCloseable) statement.executeQuery());
                 Unit var31 = Unit.INSTANCE; // wtf kotlin?
             } catch (Throwable t) {
                 var3 = t;
@@ -173,7 +169,7 @@ public final class Example {
 // For reference:
 public final class ResourceManager {
     // Other stuff omitted
-    public AutoCloseable unaryPlus(AutoCloseable receiver) {
+    public AutoCloseable autoClose(AutoCloseable receiver) {
         Intrinsics.checkParameterIsNotNull(receiver, "receiver");
         this.resourceQueue.offer(receiver);
         return receiver;

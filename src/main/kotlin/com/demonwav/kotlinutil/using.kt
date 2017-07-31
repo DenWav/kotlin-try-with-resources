@@ -33,7 +33,7 @@ class ResourceManager : AutoCloseable {
     var t: Throwable? = null
     val resourceQueue = ConcurrentLinkedQueue<AutoCloseable>()
 
-    operator fun <T: AutoCloseable> T.unaryPlus(): T {
+    fun <T: AutoCloseable> T.autoClose(): T {
         resourceQueue.offer(this)
         return this
     }
