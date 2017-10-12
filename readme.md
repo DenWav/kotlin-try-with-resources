@@ -1,13 +1,7 @@
-Kotlin Utils
-============
-
-This is a fun project of mine to play around with some Kotlin ideas that may be useful. Currently it only has a resource management utility.
-I can't think of anything else to add to it, so this probably isn't going to grow very much.
-
 `using {}`
 ----------
 
-Kotlin has no answer to Java's try-with-resources mechanic. This is sad as it's probably the only thing Java has that Kotlin doesn't.
+Kotlin has no answer to Java's `try-with-resources` mechanic. This is sad as it's probably the only thing Java has that Kotlin doesn't.
 Kotlin's response is with the `AutoCloseable#use()` extension method. This is fine except for three very big and annoying issues:
 
 1. No scoping help. In Java with `try-with-resources`, when you are finished using the given resource they would not only automatically be
